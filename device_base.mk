@@ -56,6 +56,7 @@ PRODUCT_COPY_FILES += \
 	device/samsung/aries-common/fstab.aries:root/fstab.aries \
 	device/samsung/aries-common/lpm.rc:root/lpm.rc \
 	device/samsung/aries-common/ueventd.aries.rc:root/ueventd.aries.rc \
+	device/samsung/aries-common/setupdatadata.sh:root/sbin/setupdatadata.sh
 
 # Prebuilt kl keymaps
 PRODUCT_COPY_FILES += \
@@ -96,6 +97,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	lights.aries \
 	sensors.aries \
+	power.s5pc110 \
 	hwcomposer.s5pc110 \
 	camera.aries \
 	audio.primary.aries \
