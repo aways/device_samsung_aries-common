@@ -45,7 +45,8 @@ PRODUCT_COPY_FILES := \
 	device/samsung/aries-common/vold.fstab:system/etc/vold.fstab \
 	device/samsung/aries-common/egl.cfg:system/lib/egl/egl.cfg \
 	device/samsung/aries-common/mxt224_ts_input.idc:system/usr/idc/mxt224_ts_input.idc \
-	device/samsung/aries-common/main.conf:system/etc/bluetooth/main.conf
+	device/samsung/aries-common/main.conf:system/etc/bluetooth/main.conf \
+	kernel/samsung/ics-ramdisk/jb_combo/files/hw/lights.aries.so:system/lib/hw/lights.aries.so
 
 # Init files
 PRODUCT_COPY_FILES += \
@@ -95,7 +96,6 @@ PRODUCT_PACKAGES += \
 
 # Misc other modules
 PRODUCT_PACKAGES += \
-	lights.aries \
 	sensors.aries \
 	power.s5pc110 \
 	hwcomposer.s5pc110 \
