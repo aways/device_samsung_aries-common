@@ -41,7 +41,6 @@ def CopyBootFiles(input_zip, output_zip):
 
 def CopyBMLoverMTD(output_zip):
   """Copy the bml_over_mtd utility and script to the output."""
-  output_zip.write(os.path.join(TARGET_DIR, "modem.bin"),"modem.bin")
   output_zip.write(os.path.join(UTILITIES_DIR, "make_ext4fs"),"make_ext4fs")
   output_zip.write(os.path.join(UTILITIES_DIR, "busybox"),"busybox")
   output_zip.write(os.path.join(UTILITIES_DIR, "flash_image"),"flash_image")
@@ -70,15 +69,12 @@ def WriteFullOTAPackage(input_zip, output_zip):
       metadata=metadata,
       info_dict=OPTIONS.info_dict)
 
-#  if not OPTIONS.omit_prereq:
-#    ts = GetBuildProp("ro.build.date.utc", input_zip)
-#    script.AssertOlderBuild(ts)
-
-  # script.ShowProgress(0.15, 5) in device-specific assert as I could not get it to show up before it in here
-
-#  AppendAssertions(script, input_zip)
-  device_specific.FullOTA_Assertions()
   device_specific.FullOTA_InstallBegin()
+  device_specific.FullOTA_Assertions()
+
+  CopyBMLoverMTD(output_zip)
+  CopyBootFiles(input_zip, output_zip)
+  script.WriteBMLoverMTD("boot")
 
   if OPTIONS.backuptool:
     script.Mount("/system")
@@ -105,7 +101,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.Mount("/system")
   script.Mount("/data")
   script.ShowProgress(0.7, 30);
-  #script.UnpackPackageDir("recovery", "/system")
   script.UnpackPackageDir("system", "/system")
   script.UnpackPackageDir("data", "/data")
 
@@ -121,9 +116,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
   if OPTIONS.backuptool:
     script.ShowProgress(0.2, 10)
     script.RunBackup("restore")
-
-  CopyBootFiles(input_zip, output_zip)
-  CopyBMLoverMTD(output_zip)
 
   device_specific.FullOTA_InstallEnd()
 

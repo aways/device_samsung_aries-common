@@ -22,8 +22,17 @@ VENDOR_SAMSUNG_DIR = os.path.abspath(os.path.join(LOCAL_DIR, '../../../vendor/sa
 import edify_generator
 
 class EdifyGenerator(edify_generator.EdifyGenerator):
-    def AssertDevice(self, device):
-      edify_generator.EdifyGenerator.AssertDevice(self, device)
+    def RunBackup(self, command):
+      edify_generator.EdifyGenerator.RunBackup(self, command)
+
+    #def RunConfig(self, command):
+    #  edify_generator.EdifyGenerator.RunConfig(self, command)
+
+    def WriteBMLoverMTD(self, partition):
+      """Write the given boot image into the given partition."""
+
+      args = {'partition': partition}
+
       self.script.append('show_progress(0.15, 5);');
       self.script.append(
             ('package_extract_file("updater.sh", "/tmp/updater.sh");\n'
@@ -48,24 +57,10 @@ class EdifyGenerator(edify_generator.EdifyGenerator):
              'set_perm(0, 0, 0777, "/tmp/bml_over_mtd.sh");'))
 
       self.script.append('package_extract_file("boot.img", "/tmp/boot.img");')
-      self.script.append('assert(run_program("/tmp/updater.sh") == 0);')
-
-    def RunBackup(self, command):
-      edify_generator.EdifyGenerator.RunBackup(self, command)
-
-    #def RunConfig(self, command):
-    #  edify_generator.EdifyGenerator.RunConfig(self, command)
-
-    def WriteBMLoverMTD(self, partition, partition_start_block, reservoirpartition, reservoir_start_block, image):
-      """Write the given package file into the given partition."""
-
-      args = {'partition': partition, 'partition_start_block': partition_start_block, 'reservoirpartition': reservoirpartition, 'reservoir_start_block': reservoir_start_block, 'image': image}
 
       self.script.append(
-            ('assert(run_program("/tmp/erase_image", "%(partition)s"));') % args)
+            ('assert(run_program("/tmp/updater.sh" ) == 0);'))
 
       self.script.append(
-            ('assert(package_extract_file("%(image)s", "/tmp/%(partition)s.img"),\n'
-             '       run_program("/tmp/bml_over_mtd.sh", "%(partition)s", "%(partition_start_block)s", "%(reservoirpartition)s", "%(reservoir_start_block)s", "/tmp/%(partition)s.img"),\n'
-             '       delete("/tmp/%(partition)s.img"));') % args)
+            ('delete("/tmp/%(partition)s.img");') % args)
 
