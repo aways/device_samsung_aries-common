@@ -41,6 +41,7 @@ BOARD_UMS_LUNFILE := /sys/class/android_usb/android0/f_mass_storage/lun/file
 
 # Kernel Source
 TARGET_KERNEL_SOURCE := kernel/samsung/samsung-kernel-aries
+TARGET_KERNEL_CUSTOM_RAMDISK := true
 
 # Releasetools
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/samsung/aries-common/releasetools/aries_ota_from_target_files
